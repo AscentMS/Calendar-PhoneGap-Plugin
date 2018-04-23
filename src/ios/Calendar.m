@@ -285,7 +285,9 @@
     }
 
     CDVPluginResult *pluginResult = nil;
-    if (error) {
+    if (matchingEvents.count == 0) {
+      pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@""];
+    } else if (error) {
       pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.userInfo.description];
     } else {
       pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[@"Deleted from " stringByAppendingString:calendar.title]];
