@@ -1,6 +1,16 @@
 # PhoneGap Calendar plugin
 
-for iOS and Android, by [Eddy Verbruggen](http://www.x-services.nl)
+[![NPM version][npm-image]][npm-url]
+[![Downloads][downloads-image]][npm-url]
+[![TotalDownloads][total-downloads-image]][npm-url]
+[![Twitter Follow][twitter-image]][twitter-url]
+
+[npm-image]:http://img.shields.io/npm/v/cordova-plugin-calendar.svg
+[npm-url]:https://npmjs.org/package/cordova-plugin-calendar
+[downloads-image]:http://img.shields.io/npm/dm/cordova-plugin-calendar.svg
+[total-downloads-image]:http://img.shields.io/npm/dt/cordova-plugin-calendar.svg?label=total%20downloads
+[twitter-image]:https://img.shields.io/twitter/follow/eddyverbruggen.svg?style=social&label=Follow%20me
+[twitter-url]:https://twitter.com/eddyverbruggen
 
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=eddyverbruggen%40gmail%2ecom&lc=US&item_name=cordova%2dplugin%2dcalendar&currency_code=EUR&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)
@@ -142,13 +152,14 @@ createEventInteractively            | interactive | yes | yes     | yes **  |
 createEventInteractivelyWithOptions | interactive | yes | yes     | yes **  |
 findEvent                           |             | yes | yes     |         |
 findEventWithOptions                |             | yes | yes     |         |
-listEventsInRange                   |             |     | yes     |         |
+listEventsInRange                   |             | yes | yes     |         |
 listCalendars                       |             | yes | yes     |         |
 findAllEventsInNamedCalendars       |             | yes |         |         |
 modifyEvent                         |             | yes |         |         |
 modifyEventWithOptions              |             | yes |         |         |
 deleteEvent                         |             | yes | yes     |         |
 deleteEventFromNamedCalendar        |             | yes |         |         |
+deleteEventById                     |             | yes | yes     |         |
 openCalendar                        |             | yes | yes     |         |
 
 * \* on Android < 4 dialog is shown
@@ -240,13 +251,16 @@ Basic operations, you'll want to copy-paste this for testing purposes:
   newOptions.firstReminderMinutes = 120;
   window.plugins.calendar.modifyEventWithOptions(title,eventLocation,notes,startDate,endDate,newTitle,eventLocation,notes,startDate,endDate,filterOptions,newOptions,success,error);
 
-  // delete an event (you can pass nulls for irrelevant parameters, note that on Android `notes` is ignored). The dates are mandatory and represent a date range to delete events in.
+  // delete an event (you can pass nulls for irrelevant parameters). The dates are mandatory and represent a date range to delete events in.
   // note that on iOS there is a bug where the timespan must not be larger than 4 years, see issue 102 for details.. call this method multiple times if need be
   // since 4.3.0 you can match events starting with a prefix title, so if your event title is 'My app - cool event' then 'My app -' will match.
   window.plugins.calendar.deleteEvent(newTitle,eventLocation,notes,startDate,endDate,success,error);
 
   // delete an event, as above, but for a specific calendar (iOS only)
   window.plugins.calendar.deleteEventFromNamedCalendar(newTitle,eventLocation,notes,startDate,endDate,calendarName,success,error);
+
+  // delete an event by id. If the event has recurring instances, all will be deleted unless `fromDate` is specified, which will delete from that date onward. (iOS and android only)
+  window.plugins.calendar.deleteEventById(id,fromDate,success,error);
 
   // open the calendar app (added in 4.2.8):
   // - open it at 'today'
