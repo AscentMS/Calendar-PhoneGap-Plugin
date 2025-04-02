@@ -473,13 +473,18 @@
   NSDictionary* options = [command.arguments objectAtIndex:0];
   NSNumber* date = [options objectForKey:@"date"];
 
-  [self.commandDelegate runInBackground: ^{
+  [self.commandDelegate runInBackground:^{
     NSTimeInterval _startInterval = [date doubleValue] / 1000; // strip millis
     NSDate *openDate = [NSDate dateWithTimeIntervalSince1970:_startInterval];
     NSInteger interval = [openDate timeIntervalSinceReferenceDate];
 
     NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"calshow:%ld", interval]];
-    [[UIApplication sharedApplication] openURL:url];
+    
+    if ([[UIApplication sharedApplication] canOpenURL:url]) {
+      [[UIApplication sharedApplication] openURL:url 
+                                         options:@{} 
+                               completionHandler:nil];
+    }
   }];
 }
 
